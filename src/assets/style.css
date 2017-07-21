@@ -8,4 +8,4 @@ ol, ul {list-style:none;}
 .clx:before, .clx:after {display:table; line-height:0; content:"";}
 .clx:after {clear:both;}
 
-body {font-size:12px;}
+body {font:14px/1.5 "Microsoft Yahei", "Open Sans", Arial, "Hiragino Sans GB", sans-serif; background:#f9f9f9; -webkit-font-smoothing:antialiased; overflow:hidden;}
