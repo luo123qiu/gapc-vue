@@ -26,12 +26,15 @@
                 菜单4
             </Menu-item>
         </Menu>
-        <Cascader :data="start" v-model="start1"></Cascader>
-        <Cascader :data="end" v-model="end1"></Cascader>
-        <Cascader :data="date" v-model="date1"></Cascader>
-        <i-switch v-model="switch1"></i-switch>
-        <Input v-model="telphone" placeholder="please input..."></Input>
-        <Input v-model="remark" type="textarea"></Input>
+        <Form>
+            <Cascader :data="start" v-model="start1"></Cascader>
+            <Cascader :data="end" v-model="end1"></Cascader>
+            <Cascader :data="date" v-model="date1"></Cascader>
+            <i-switch v-model="switch1"></i-switch>
+            <Input v-model="telphone" placeholder="please input..."></Input>
+            <Input v-model="remark" type="textarea"></Input>
+            <Button type="primary">提交</Button>
+        </Form>
         <div>我擦</div>
         <a href="#/">返回</a>
     </div>
@@ -151,6 +154,9 @@
                     }
                 ]
             }
+        },
+        methods: {
+            
         }
     }
 </script>
