@@ -6,7 +6,7 @@
                     菜单1
                 </template>
                 <Menu-group title="菜单1-1">
-                    <Menu-item name="1-1">菜单1-1</Menu-item>
+                    <Menu-item name="1-1"><a href="#/show/">菜单1-1</a></Menu-item>
                     <Menu-item name="1-2">菜单1-1</Menu-item>
                     <Menu-item name="1-3">菜单1-1</Menu-item>
                 </Menu-group>
@@ -26,14 +26,28 @@
                 菜单4
             </Menu-item>
         </Menu>
-        <Form>
-            <Cascader :data="start" v-model="start1"></Cascader>
-            <Cascader :data="end" v-model="end1"></Cascader>
-            <Cascader :data="date" v-model="date1"></Cascader>
-            <i-switch v-model="switch1"></i-switch>
-            <Input v-model="telphone" placeholder="please input..."></Input>
-            <Input v-model="remark" type="textarea"></Input>
-            <Button type="primary">提交</Button>
+        <Form ref="formInline" :model="formInline" :rules="ruleInline">
+            <Form-item>
+                <Cascader :data="start" v-model="start1"></Cascader>
+            </Form-item>
+            <Form-item>
+                <Cascader :data="end" v-model="end1"></Cascader>
+            </Form-item>
+            <Form-item>
+                <Cascader :data="date" v-model="date1"></Cascader>
+            </Form-item>
+            <Form-item>
+                <i-switch v-model="switch1"></i-switch>
+            </Form-item>
+            <Form-item prop="telphone">
+                <Input v-model="formInline.telphone" placeholder="please input..."></Input>
+            </Form-item>
+            <Form-item prop="remark">
+                <Input v-model="formInline.remark" type="textarea"></Input>
+            </Form-item>
+            <Form-item>
+                <Button type="primary" @click="submit('formInline')">提交</Button>
+            </Form-item>
         </Form>
         <div>我擦</div>
         <a href="#/">返回</a>
@@ -46,8 +60,20 @@
         data () {
             return {
                 switch1: false,
-                telphone: '',
-                remark: '',
+                formInline: {
+                    telphone: '',
+                    remark: ''
+                },
+                results: [],
+                ruleInline: {
+                    telphone: [
+                        {
+                            required: true,
+                            message: '请填写联系电话',
+                            trigger: 'blur'
+                        }
+                    ]
+                },
                 start1: [],
                 start: [
                     {
@@ -156,7 +182,35 @@
             }
         },
         methods: {
-            
+            submit (form) {
+                this.$refs[form].validate((valid) => {
+                    console.log(valid);
+                    if (valid) {
+                        const postData = {
+                            switch: this.switch1,
+                            telphone: this.formInline.telphone,
+                            remark: this.formInline.remark,
+                            start1: this.start1,
+                            end1: this.end1,
+                            date1: this.date1
+                        }
+                        console.log(postData);
+                        /*this.$http.post('url', postData).then(response => {
+                            console.log(response);
+                        })*/
+                    } else {
+                        console.log('b');
+                    }
+                })
+            }
+        },
+        mounted () {
+            this.$http.get('https://api.nytimes.com/svc/topstories/v2/home.json?api-key=ce282ba503d6480bbb0ba63686558cbc').then(
+                response => {
+                    this.results = response.data.results;
+                    console.log(this.results);
+                }
+            )
         }
     }
 </script>
